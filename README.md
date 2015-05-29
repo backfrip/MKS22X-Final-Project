@@ -21,6 +21,12 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
+### [Version 0.0.4](#) (2015-05-29)
+
+##### New Features
+  - Threw in a tile .PNG for future use
+  - Started framework for GameObjects and Entities (objects package for now)
+
 ### [Version 0.0.3](https://github.com/backfrip/MKS22X-Final-Project/commit/7f0affecd7499bd8754386ab58eff40b0d74166e) (2015-05-25)
 
 ##### New Features
