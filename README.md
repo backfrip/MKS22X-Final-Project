@@ -15,7 +15,7 @@ A two-dimensional, isometric [dimetric], role-playing game.
 ##### Command Line
   1. Navigate to MKS22X-Final-Project directory
   2. Compile with: `javac -d bin -cp "lib/*" -sourcepath src src/main/Main.java`
-  3. Using Java 7 or later, run with: `java -cp "lib/*;bin" main.Main`
+  3. Using Java 7 or later, run with: `java -cp "lib/*;bin" main.Main`  
   Using Java 6 or earlier, run with: `java -cp "lib/*:bin" main.Main`
 
 
