@@ -4,7 +4,7 @@ import java.util.*;
 public class Player {
 	private int exp;
 	private double xcor, ycor;
-	private String name, type;
+	private final String name, type;
 	private ArrayList<Integer> stats;
 	public Player(String name){
 		this(name, "default");
@@ -20,4 +20,26 @@ public class Player {
 		//Calculation to get level
 		return 0;
 	}
+	public void addExp(int increment){
+		exp += increment; 
+	}
+	public double getXcor(){
+		return xcor;
+	}
+	public double getYcor(){
+		return ycor;
+	}
+	public void moveXcor(double distance){
+		xcor += distance;
+	}
+	public void moveYcor(double distance){
+		ycor += distance;
+	}
+	public String getName(){
+		return name;
+	}
+	public String getType(){
+		return type;
+	}
+	
 }
