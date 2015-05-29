@@ -21,7 +21,7 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
-### [Version 0.0.3](#) (2015-05-25)
+### [Version 0.0.3](https://github.com/backfrip/MKS22X-Final-Project/commit/7f0affecd7499bd8754386ab58eff40b0d74166e) (2015-05-25)
 
 ##### New Features
   - Basic Game and Screen setup, threw in a counter for testing
