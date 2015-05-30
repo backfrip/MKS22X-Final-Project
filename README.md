@@ -21,7 +21,7 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
-### [Version 0.0.5](/) (2015-05-30)
+### [Version 0.0.5]() (2015-05-30)
 
 ##### New Features
   - Added transparency to resource/img/tile.png
