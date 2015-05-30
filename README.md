@@ -21,7 +21,15 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
-### [Version 0.0.4](#) (2015-05-29)
+### [Version 0.0.5](#) (2015-05-30)
+
+##### New Features
+  - Added transparency to resource/img/tile.png
+  - Added more configuration settings to launcher class (Main.java), plan to make them adjustable in-game and recall on startup
+  - Allowed for fullscreening (press space for now), FillViewport auto-resizes and crops
+  - Tile rendering test
+
+### [Version 0.0.4](https://github.com/backfrip/MKS22X-Final-Project/commit/c94bc713634837ce4ccfadd4191b9beb388aa23c) (2015-05-29)
 
 ##### New Features
   - Threw in a tile .PNG for future use
