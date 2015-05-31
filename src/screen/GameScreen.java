@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -19,6 +21,8 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     private Texture tileImage;
     private SpriteBatch batch;
+    private ShapeRenderer sr;
+    private double pX, pY;
 
     public GameScreen(OurGame gameRef) {
 	game = gameRef;
@@ -26,27 +30,7 @@ public class GameScreen implements Screen {
 	viewport = new FillViewport(80, 45, camera);
 	tileImage = new Texture(new FileHandle("resource/img/tile.png"));
 	batch = new SpriteBatch();
-    }
-
-    @Override
-    public void dispose() {
-	game.dispose();
-    }
-
-    @Override
-    public void hide() {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void pause() {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void show() {
+	sr = new ShapeRenderer();
     }
 
     @Override
@@ -63,22 +47,42 @@ public class GameScreen implements Screen {
 		Gdx.graphics.setDisplayMode(1280, 720, false);
 	    }
 	}
+	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+	    Gdx.app.exit();
+	}
 
 	camera.update();
 
 	batch.setProjectionMatrix(camera.combined);
 	batch.begin();
-	drawTile(0, 0);
-	drawTile(1, 1);
-	drawTile(-1, 1);
-	drawTile(-1, -1);
-	drawTile(1, -1);
 	batch.end();
+
+	sr.setProjectionMatrix(camera.combined);
+	sr.begin(ShapeType.Line);
+	sr.setColor(0, 0.1f, 0.5f, 1);
+	sr.circle(0, 0, 1, 20);
+	sr.setColor(0.7f, 0, 0, 1);
+	sr.circle(0, 0, 0.3f, 10);
+	sr.end();
     }
 
-    private void drawTile(float xpos, float ypos) {
-	batch.draw(tileImage, xpos * 4 - (34f / 8), ypos * 2 - (17f / 8),
-		34f / 4, 17f / 4);
+    @Override
+    public void dispose() {
+	game.dispose();
+    }
+
+    @Override
+    public void hide() {
+	// TODO Auto-generated method stub
+    }
+
+    @Override
+    public void pause() {
+	// TODO Auto-generated method stub
+    }
+
+    @Override
+    public void show() {
     }
 
     @Override
@@ -89,7 +93,6 @@ public class GameScreen implements Screen {
     @Override
     public void resume() {
 	// TODO Auto-generated method stub
-
     }
 
 }
