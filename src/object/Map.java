@@ -57,10 +57,10 @@ public class Map {
     }
 
     public Vector2 getSpawn() {
-	return spawn.cpy();
+	return new Vector2(spawn.x, size.y - spawn.x - 1);
     }
 
     public char getTile(float x, float y) {
-	return map[(int) y][(int) x];
+	return map[(int) (size.y - y - 1)][(int) x];
     }
 }

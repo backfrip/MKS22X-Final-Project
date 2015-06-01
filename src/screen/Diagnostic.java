@@ -19,6 +19,7 @@ public class Diagnostic implements Screen {
     private Viewport viewport;
     private ShapeRenderer sr;
     private Map map;
+    private float pX, pY;
 
     public Diagnostic(OurGame gameRef) {
 	game = gameRef;
@@ -26,6 +27,8 @@ public class Diagnostic implements Screen {
 	viewport = new FillViewport(80, 45, camera);
 	sr = new ShapeRenderer();
 	map = new Map("test");
+	pX = map.getSpawn().x;
+	pY = map.getSpawn().y;
     }
 
     @Override
@@ -33,9 +36,16 @@ public class Diagnostic implements Screen {
 	Gdx.gl.glClearColor(1, 1, 1, 1);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 	    Gdx.app.exit();
-	}
+	if (Gdx.input.isKeyPressed(Keys.UP))
+	    pY += 0.1f;
+	if (Gdx.input.isKeyPressed(Keys.LEFT))
+	    pX -= 0.1f;
+	if (Gdx.input.isKeyPressed(Keys.RIGHT))
+	    pX += 0.1f;
+	if (Gdx.input.isKeyPressed(Keys.DOWN))
+	    pY -= 0.1f;
 
 	camera.update();
 
@@ -52,9 +62,9 @@ public class Diagnostic implements Screen {
 	    for (int y = 0; y < map.depth(); y++) {
 		tile = map.getTile(x, y);
 		if (tile == '#')
-		    sr.rect(x * 2, y * 2, 2, 2);
+		    sr.rect((x - pX) * 2 - 1, (y - pY) * 2 - 1, 2, 2);
 		if (tile == 's')
-		    sr.circle(x * 2 + 1, y * 2 + 1, 1, 10);
+		    sr.circle((x - pX) * 2, (y - pY) * 2, 1, 10);
 	    }
 	}
 
