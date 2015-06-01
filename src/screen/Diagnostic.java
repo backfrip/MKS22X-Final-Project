@@ -38,14 +38,22 @@ public class Diagnostic implements Screen {
 
 	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 	    Gdx.app.exit();
-	if (Gdx.input.isKeyPressed(Keys.UP))
-	    pY += 0.1f;
-	if (Gdx.input.isKeyPressed(Keys.LEFT))
-	    pX -= 0.1f;
-	if (Gdx.input.isKeyPressed(Keys.RIGHT))
-	    pX += 0.1f;
-	if (Gdx.input.isKeyPressed(Keys.DOWN))
-	    pY -= 0.1f;
+	if (Gdx.input.isKeyPressed(Keys.UP)) {
+	    if (map.getTile(pX, pY + 0.1f) != '#')
+		pY += 0.1f;
+	}
+	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+	    if (map.getTile(pX - 0.1f, pY) != '#')
+		pX -= 0.1f;
+	}
+	if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+	    if (map.getTile(pX + 1.1f, pY) != '#')
+		pX += 0.1f;
+	}
+	if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+	    if (map.getTile(pX, pY - 1.1f) != '#')
+		pY -= 0.1f;
+	}
 
 	camera.update();
 
