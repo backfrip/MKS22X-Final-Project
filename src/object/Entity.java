@@ -1,4 +1,4 @@
-package objects;
+package object;
 
 /**
  * Abstract parent for objects with a graphic representation in the game.

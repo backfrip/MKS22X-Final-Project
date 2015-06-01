@@ -1,7 +1,7 @@
-package objects;
+package object;
 import java.util.*;
 
-public class Player extends movingEntity{
+public class Player extends MovingEntity{
 	private int exp;
 	private ArrayList<Integer> stats;
 	//private Item heldItem;
@@ -10,8 +10,6 @@ public class Player extends movingEntity{
 	}
 	public Player(String name, String type){
 		exp = 0;
-		xcor = 0;
-		ycor = 0;
 		stats = new ArrayList<Integer>(10);
 		setBaseStats();
 	}
