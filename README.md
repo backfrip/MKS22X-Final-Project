@@ -21,7 +21,21 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
-### [Version 0.0.5](../..) (2015-05-30)
+### [Version 0.0.6](../..) (2015-05-31)
+
+##### New Features
+  - Added a Diagnostic screen to debug entities on a 2D grid before moving to isometric
+  - Created a Map class to hold information about map cells
+  - Implemented rendering of map
+  - Added basic movement and collision systems for player debugging, only for temporary testing
+  - Swapped FillViewport for ExtendViewport to avoid cropping
+  - General refactoring
+
+##### Features Planned for the Very Near Future
+  - Enemies to populate the map
+  - A QuadTree data structure to reduce collision checks
+
+### [Version 0.0.5](../../commit/22ee25592d65b90103b5e469cbcc1ed329219e08) (2015-05-30)
 
 ##### New Features
   - Added transparency to resource/img/tile.png
