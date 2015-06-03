@@ -82,9 +82,10 @@ public class Diagnostic implements Screen {
 		viewport.getScreenHeight() - 40);
 	text.draw(batch, "player-Y = " + pY, 10,
 		viewport.getScreenHeight() - 55);
-	text.draw(batch, "Press ESC to exit", 10, 40);
-	text.draw(batch,
-		"Press SPACE to toggle fullscreen   Move with the arrow keys",
+	text.draw(batch, "Press ESC to exit   Press M to toggle maps", 10, 40);
+	text.draw(
+		batch,
+		"Press SPACE to toggle fullscreen   Move with the arrow keys   Press R to reset",
 		10, 25);
 	batch.end();
 
