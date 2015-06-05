@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Player extends MovingEntity{
 	private int exp;
-	private ArrayList<Integer> stats;
+	
 	//private Item heldItem;
 	public Player(String name){
 		this(name, "default");
@@ -57,13 +57,5 @@ public class Player extends MovingEntity{
 			stats.set(3, stats.get(3) + change);
 		}
 	}
-	public int getAttack(){
-		return stats.get(4);
-	}
-	public int getSpecial(){
-		return stats.get(5);
-	}
-	public int getDexterity(){
-		return stats.get(6);
-	}
+	
 }

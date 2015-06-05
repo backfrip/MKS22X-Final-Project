@@ -1,8 +1,10 @@
 package object;
 
+import java.util.ArrayList;
+
 public abstract class MovingEntity extends Entity {
-    int hp, level;
-    
+    private int hp, level;
+    private ArrayList<Integer> stats;
     //accessors
     public int getHP(){
     	return hp;
@@ -30,5 +32,26 @@ public abstract class MovingEntity extends Entity {
     	setY(getY() + distance);
     }
 
+    //stats
+    public abstract void setStats();
     
+    public int getMaxHP(){
+		return stats.get(1);
+	}
+	
+    public int getMaxEnergy(){
+		return stats.get(2);
+	}
+    
+    public int getAttack(){
+		return stats.get(3);
+	}
+    
+	public int getSpecial(){
+		return stats.get(4);
+	}
+	
+	public int getDexterity(){
+		return stats.get(5);
+	}
 }

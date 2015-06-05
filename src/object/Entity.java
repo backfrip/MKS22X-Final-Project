@@ -14,7 +14,7 @@ public abstract class Entity {
 
     // Mutators
     public double getX() {
-	return xcor;
+    	return xcor;
     }
 
     public double getY() {
