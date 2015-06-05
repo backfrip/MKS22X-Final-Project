@@ -21,13 +21,9 @@ public abstract class Entity {
 	return ycor;
     }
 
-    public void moveX(double distance) {
-	xcor += distance;
-    }
-
-    public void moveY(double distance) {
-	ycor += distance;
-    }
+    public abstract void moveX(double distance);
+    
+    public abstract void moveY(double distance);
 
     public void setX(double distance) {
 	xcor = distance;
