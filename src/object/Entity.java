@@ -4,32 +4,23 @@ package object;
  * Abstract parent for objects with a graphic representation in the game.
  */
 public abstract class Entity {
-    private double xcor, ycor;
+    private float xcor, ycor;
     private String name;
 
-    public Entity() {
-
-    }
-
-
     // Mutators
-    public double getX() {
-    	return xcor;
+    public float getX() {
+	return xcor;
     }
 
-    public double getY() {
+    public float getY() {
 	return ycor;
     }
 
-    public abstract void moveX(double distance);
-    
-    public abstract void moveY(double distance);
-
-    public void setX(double distance) {
+    public void setX(float distance) {
 	xcor = distance;
     }
 
-    public void setY(double distance) {
+    public void setY(float distance) {
 	ycor = distance;
     }
 

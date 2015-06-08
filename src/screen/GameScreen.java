@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 	game = gameRef;
 	camera = new OrthographicCamera();
 	viewport = new FillViewport(80, 45, camera);
-	tileImage = new Texture(new FileHandle("resource/img/tile.png"));
+	tileImage = new Texture(new FileHandle("resource/img/stile.png"));
 	batch = new SpriteBatch();
 	sr = new ShapeRenderer();
     }

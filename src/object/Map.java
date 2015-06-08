@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.math.Vector2;
 
 public class Map {

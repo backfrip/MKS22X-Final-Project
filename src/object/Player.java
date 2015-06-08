@@ -3,6 +3,8 @@ import java.util.*;
 
 public class Player extends MovingEntity{
 	private int exp;
+	private ArrayList<Item> inventory;
+	private ArrayList<Integer> stats;
 	
 	//private Item heldItem;
 	public Player(String name){
@@ -56,6 +58,11 @@ public class Player extends MovingEntity{
 		else {
 			stats.set(3, stats.get(3) + change);
 		}
+	}
+	@Override
+	public void setStats() {
+	    // TODO Auto-generated method stub
+	    
 	}
 	
 }

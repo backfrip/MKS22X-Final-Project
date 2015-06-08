@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Diagnostic implements Screen {
-    private final String[] filenames = { "test", "test2", "test3" };
+    private final String[] filenames = { "blankspace", "test", "test2", "test3" };
 
     private OurGame game;
     private OrthographicCamera camera;
