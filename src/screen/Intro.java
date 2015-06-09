@@ -40,6 +40,12 @@ public class Intro implements Screen{
 	public void render(float delta){
     	Gdx.gl.glClearColor(1, 1, 1, 1);
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    	batch.begin();
+
+        //batch.draw(image, 250, 200);
+        batch.draw(new Texture("../resource/background/introduction.jpg"), 0, 0);
+
+        batch.end();
     	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT))
     		game.setScreen(new DiagnosticII(game));
     	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
