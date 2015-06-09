@@ -26,7 +26,7 @@ public class DiagnosticII implements Screen {
     private Viewport viewport;
     private ShapeRenderer sr;
     private Map map;
-    private float px, py;
+    private float px, py, w, h;
     private BitmapFont text;
     private SpriteBatch batch;
     private SpriteCache cache;
@@ -37,7 +37,7 @@ public class DiagnosticII implements Screen {
     public DiagnosticII(OurGame gameRef) {
 	game = gameRef;
 	camera = new OrthographicCamera();
-	viewport = new ExtendViewport(80 * 4, 45 * 4, camera);
+	viewport = new ExtendViewport(320, 180, camera);
 	sr = new ShapeRenderer();
 	map = new Map("blankspace");
 	px = map.getSpawn().x;
@@ -53,8 +53,8 @@ public class DiagnosticII implements Screen {
     }
 
     private void loadMap() {
-	float w = space.getWidth();
-	float h = space.getHeight();
+	w = space.getWidth();
+	h = space.getHeight();
 	cache.beginCache();
 	for (int x = 0; x < 5; x++) {
 	    for (int y = 0; y < 5; y++) {
@@ -75,7 +75,8 @@ public class DiagnosticII implements Screen {
 	    Gdx.app.exit();
 
 	m = camera.combined.cpy();
-	m.translate(-1, -1, 0);
+	m.translate((w - 2) / 2.0f * (px - py) - 1, (h - 1) / 2.0f * (px + py)
+		- 1, 0);
 
 	camera.update();
 
@@ -91,6 +92,26 @@ public class DiagnosticII implements Screen {
 	sr.setColor(0.2f, 0, 0.6f, 1);
 	sr.circle(0, 0, 5f, 10);
 	sr.end();
+
+	movePlayer();
+    }
+
+    private void movePlayer() { // Up/down movement reversed for reasons
+	if (Gdx.input.isKeyPressed(Keys.UP)) { // Actually translates DOWN
+	    px -= 0.1f;
+	}
+	if (Gdx.input.isKeyPressed(Keys.DOWN)) {// Actually translates UP
+
+	    px += 0.1f;
+	}
+	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+
+	    py -= 0.1f;
+	}
+	if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+
+	    py += 0.1f;
+	}
     }
 
     @Override
