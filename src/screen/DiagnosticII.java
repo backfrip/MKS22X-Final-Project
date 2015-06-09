@@ -33,6 +33,8 @@ public class DiagnosticII implements Screen {
     private int cid;
     private Texture space, wall;
     private Matrix4 m;
+    private final int MAX_X;
+    private final int MAX_Y;
 
     public DiagnosticII(OurGame gameRef) {
 	game = gameRef;
@@ -49,6 +51,8 @@ public class DiagnosticII implements Screen {
 	wall = new Texture(new FileHandle("resource/img/wtile.png"));
 	m = camera.combined.cpy();
 	m.translate(-1, -1, 0);
+	MAX_X = 25;
+	MAX_Y = 25;
 	loadMap();
     }
 
@@ -56,8 +60,8 @@ public class DiagnosticII implements Screen {
 	w = space.getWidth();
 	h = space.getHeight();
 	cache.beginCache();
-	for (int x = 0; x < 5; x++) {
-	    for (int y = 0; y < 5; y++) {
+	for (int x = 0; x < MAX_X; x++) {
+	    for (int y = 0; y < MAX_Y; y++) {
 		cache.add(space, (w - 2) / 2.0f * (x - y - 1), (h - 1) / -2.0f
 			* (x + y + 2), w, h, 0, 0, space.getWidth(),
 			space.getHeight(), false, false);
@@ -98,19 +102,44 @@ public class DiagnosticII implements Screen {
 
     private void movePlayer() { // Up/down movement reversed for reasons
 	if (Gdx.input.isKeyPressed(Keys.UP)) { // Actually translates DOWN
-	    px -= 0.1f;
+	    if (px - 0.1f >= 0)
+	    	px -= 0.1f;
+	    else 
+	    	px = 0;
+	    if (py - 0.1f >= 0)
+	    	py -= 0.1f;
+	    else
+	    	py = 0;
 	}
 	if (Gdx.input.isKeyPressed(Keys.DOWN)) {// Actually translates UP
-
-	    px += 0.1f;
+		if (px + 0.1f <= MAX_X)
+	    	px += 0.1f;
+		else
+			px = MAX_X;
+	    if (py + 0.1f <= MAX_Y)
+	    	py += 0.1f;
+	    else
+	    	py = MAX_Y;
 	}
 	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-
-	    py -= 0.1f;
+		if (px + 0.1f <= MAX_X)
+	    	px += 0.1f;
+		else
+			px = MAX_X;
+	    if (py - 0.1f >= 0)
+	    	py -= 0.1f;
+	    else
+	    	py = 0;
 	}
 	if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-
-	    py += 0.1f;
+		if (px - 0.1f >= 0)
+	    	px -= 0.1f;
+		else
+			px = 0;
+	    if (py + 0.1f <= MAX_Y)
+	    	py += 0.1f;
+	    else
+	    	py = MAX_Y;
 	}
     }
 

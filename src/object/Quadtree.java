@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Quadtree {
     private final int MAX_OBJECTS = 10;
-    private final int MAX_LEVELS = 5;
+    private final int MAX_LEVELS = 25;
 
     private int level;
     private ArrayList<Rectangle> entities;
