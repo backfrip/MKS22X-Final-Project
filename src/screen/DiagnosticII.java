@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -30,11 +32,12 @@ public class DiagnosticII implements Screen {
     private SpriteCache cache;
     private int cid;
     private Texture space, wall;
+    private Matrix4 m;
 
     public DiagnosticII(OurGame gameRef) {
 	game = gameRef;
 	camera = new OrthographicCamera();
-	viewport = new ExtendViewport(80, 45, camera);
+	viewport = new ExtendViewport(80 * 4, 45 * 4, camera);
 	sr = new ShapeRenderer();
 	map = new Map("blankspace");
 	px = map.getSpawn().x;
@@ -44,14 +47,22 @@ public class DiagnosticII implements Screen {
 	text = new BitmapFont();
 	space = new Texture(new FileHandle("resource/img/stile.png"));
 	wall = new Texture(new FileHandle("resource/img/wtile.png"));
+	m = camera.combined.cpy();
+	m.translate(-1, -1, 0);
 	loadMap();
     }
 
     private void loadMap() {
+	float w = space.getWidth();
+	float h = space.getHeight();
 	cache.beginCache();
-	cache.add(space, 0, 0, 34.0f / 4, 17.0f / 4, 0, 0, 34, 17, false, false);
-	cache.add(space, (34.0f - 1) / 8, (17.0f - 1) / 8, 34.0f / 4,
-		17.0f / 4, 0, 0, 34, 17, false, false);
+	for (int x = 0; x < 5; x++) {
+	    for (int y = 0; y < 5; y++) {
+		cache.add(space, (w - 2) / 2.0f * (x - y - 1), (h - 1) / -2.0f
+			* (x + y + 2), w, h, 0, 0, space.getWidth(),
+			space.getHeight(), false, false);
+	    }
+	}
 	cid = cache.endCache();
     }
 
@@ -63,14 +74,23 @@ public class DiagnosticII implements Screen {
 	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 	    Gdx.app.exit();
 
+	m = camera.combined.cpy();
+	m.translate(-1, -1, 0);
+
 	camera.update();
 
-	cache.setProjectionMatrix(camera.combined);
+	cache.setProjectionMatrix(m);
 	cache.begin();
 	Gdx.gl.glEnable(GL20.GL_BLEND);
 	Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 	cache.draw(cid);
 	cache.end();
+
+	sr.setProjectionMatrix(camera.combined);
+	sr.begin(ShapeType.Line);
+	sr.setColor(0.2f, 0, 0.6f, 1);
+	sr.circle(0, 0, 5f, 10);
+	sr.end();
     }
 
     @Override
