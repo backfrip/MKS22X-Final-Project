@@ -47,20 +47,33 @@ public class DiagnosticII implements Screen {
 	text = new BitmapFont();
 	space = new Texture(new FileHandle("resource/img/stile.png"));
 	wall = new Texture(new FileHandle("resource/img/wtile.png"));
+	w = space.getWidth();
+	h = space.getHeight();
 	m = camera.combined.cpy();
 	m.translate(-1, -1, 0);
-	loadMap();
+	// loadMap();
     }
 
     private void loadMap() {
 	w = space.getWidth();
 	h = space.getHeight();
 	cache.beginCache();
-	for (int x = 0; x < 5; x++) {
-	    for (int y = 0; y < 5; y++) {
-		cache.add(space, (w - 2) / 2.0f * (x - y - 1), (h - 1) / -2.0f
-			* (x + y + 2), w, h, 0, 0, space.getWidth(),
-			space.getHeight(), false, false);
+	/*
+	 * for (int x = 0; x < 5; x++) { for (int y = 0; y < 5; y++) {
+	 * cache.add(space, (w - 2) / 2.0f * (x - y - 1), (h - 1) / -2.0f (x + y
+	 * + 2), w, h, 0, 0, space.getWidth(), space.getHeight(), false, false);
+	 * } }
+	 */
+	for (int x = 0; x < map.length(); x++) {
+	    for (int y = 0; y < map.depth(); y++) {
+		if (map.getTile(x, y) == '#')
+		    cache.add(wall, (w - 2) / 2.0f * (x - y - 1), (h - 1)
+			    / -2.0f * (x + y + 2), w, h, 0, 0,
+			    space.getWidth(), space.getHeight(), false, false);
+		else
+		    cache.add(space, (w - 2) / 2.0f * (x - y - 1), (h - 1)
+			    / -2.0f * (x + y + 2), w, h, 0, 0,
+			    space.getWidth(), space.getHeight(), false, false);
 	    }
 	}
 	cid = cache.endCache();
@@ -80,20 +93,38 @@ public class DiagnosticII implements Screen {
 
 	camera.update();
 
-	cache.setProjectionMatrix(m);
-	cache.begin();
-	Gdx.gl.glEnable(GL20.GL_BLEND);
-	Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-	cache.draw(cid);
-	cache.end();
+	/*
+	 * cache.setProjectionMatrix(m); cache.begin();
+	 * Gdx.gl.glEnable(GL20.GL_BLEND); Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,
+	 * GL20.GL_ONE_MINUS_SRC_ALPHA); cache.draw(cid); cache.end();
+	 */
+
+	batch.setProjectionMatrix(m);
+	batch.begin();
+	for (int x = 0; x < map.length(); x++) {
+	    for (int y = 0; y < map.depth(); y++) {
+		if (map.getTile(x, y) == '#')
+		    batch.draw(wall, (w - 2) / 2.0f * (x - y - 1), (h - 1)
+			    / -2.0f * (x + y + 2), w, h, 0, 0,
+			    space.getWidth(), space.getHeight(), false, false);
+		else
+		    batch.draw(space, (w - 2) / 2.0f * (x - y - 1), (h - 1)
+			    / -2.0f * (x + y + 2), w, h, 0, 0,
+			    space.getWidth(), space.getHeight(), false, false);
+	    }
+	}
+	batch.end();
 
 	sr.setProjectionMatrix(camera.combined);
 	sr.begin(ShapeType.Line);
 	sr.setColor(0.2f, 0, 0.6f, 1);
-	sr.circle(0, 0, 5f, 10);
+	sr.circle(0, 0, 5f, 40);
 	sr.end();
 
 	movePlayer();
+
+	if (Gdx.input.isKeyPressed(Keys.NUM_1))
+	    game.setScreen(new Diagnostic(game));
     }
 
     private void movePlayer() { // Up/down movement reversed for reasons

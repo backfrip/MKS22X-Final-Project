@@ -66,7 +66,7 @@ public class Diagnostic implements Screen {
 	if (Gdx.input.isKeyJustPressed(Keys.R))
 	    game.setScreen(new Diagnostic(game));
 	if (Gdx.input.isKeyJustPressed(Keys.M)) {
-	    sel = (sel + 1) % 3;
+	    sel = (sel + 1) % 4;
 	    game.setScreen(new Diagnostic(game, sel));
 	}
 
@@ -111,6 +111,9 @@ public class Diagnostic implements Screen {
 	}
 
 	sr.end();
+
+	if (Gdx.input.isKeyJustPressed(Keys.NUM_1))
+	    game.setScreen(new DiagnosticII(game));
     }
 
     private void movePlayer() { // Up/down movement reversed for reasons
