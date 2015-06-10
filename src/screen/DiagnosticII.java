@@ -33,8 +33,6 @@ public class DiagnosticII implements Screen {
     private int cid;
     private Texture space, wall;
     private Matrix4 m;
-    private final int MAX_X;
-    private final int MAX_Y;
 
     public DiagnosticII(OurGame gameRef) {
 	game = gameRef;
@@ -141,20 +139,20 @@ public class DiagnosticII implements Screen {
 	    	py = 0;
 	}
 	if (Gdx.input.isKeyPressed(Keys.DOWN)) {// Actually translates UP
-		if (px + 0.1f <= MAX_X)
+		if (px + 0.1f <= map.length())
 	    	px += 0.1f;
 		else
-			px = MAX_X;
-	    if (py + 0.1f <= MAX_Y)
+			px = map.length();
+	    if (py + 0.1f <= map.depth())
 	    	py += 0.1f;
 	    else
-	    	py = MAX_Y;
+	    	py = map.depth();
 	}
 	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-		if (px + 0.1f <= MAX_X)
+		if (px + 0.1f <= map.length())
 	    	px += 0.1f;
 		else
-			px = MAX_X;
+			px = map.length();
 	    if (py - 0.1f >= 0)
 	    	py -= 0.1f;
 	    else
@@ -165,10 +163,10 @@ public class DiagnosticII implements Screen {
 	    	px -= 0.1f;
 		else
 			px = 0;
-	    if (py + 0.1f <= MAX_Y)
+	    if (py + 0.1f <= map.depth())
 	    	py += 0.1f;
 	    else
-	    	py = MAX_Y;
+	    	py = map.depth();
 	}
     }
 
