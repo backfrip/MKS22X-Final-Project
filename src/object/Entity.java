@@ -1,27 +1,34 @@
 package object;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
+
 /**
  * Abstract parent for objects with a graphic representation in the game.
  */
 public abstract class Entity {
-    private float xcor, ycor;
+    private Rectangle bounds;
     private String name;
+    private Sprite sprite;
 
-    // Mutators
-    public float getX() {
-	return xcor;
+    /**
+     * Creates a new Entity.
+     * 
+     * @param n
+     *            The name of the Entity.
+     * @param b
+     *            The location and dimensions of the Entity.
+     * @param s
+     *            The sprite that represents this Entity.
+     */
+    public Entity(String n, Rectangle b, Sprite s) {
+	bounds = b;
+	name = n;
+	sprite = s;
     }
 
-    public float getY() {
-	return ycor;
-    }
-
-    public void setX(float distance) {
-	xcor = distance;
-    }
-
-    public void setY(float distance) {
-	ycor = distance;
+    public Rectangle getBounds() {
+	return bounds;
     }
 
     public String getName() {

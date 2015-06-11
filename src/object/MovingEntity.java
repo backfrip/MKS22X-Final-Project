@@ -1,49 +1,31 @@
 package object;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class MovingEntity extends Entity {
-    private int hp, level;
-    private ArrayList<Integer> stats;
+    private int health, energy;
+    private float direction;
+    private Stats stats;
 
-    // accessors
-    public int getHP() {
-	return hp;
+    public MovingEntity(String n, Rectangle b, Sprite sp, Stats st) {
+	super(n, b, sp);
+	stats = st;
     }
 
-    public int getLevel() {
-	return level;
+    public int getHealth() {
+	return health;
     }
 
-    // mutators
-    public void setHP(int hp) {
-	this.hp = hp;
+    public void setHealth(int health) {
+	this.health = health;
     }
 
-    public void setLevel(int level) {
-	this.level = level;
+    public int getEnergy() {
+	return energy;
     }
 
-    // stats
-    public abstract void setStats();
-
-    public int getMaxHP() {
-	return stats.get(1);
-    }
-
-    public int getMaxEnergy() {
-	return stats.get(2);
-    }
-
-    public int getAttack() {
-	return stats.get(3);
-    }
-
-    public int getSpecial() {
-	return stats.get(4);
-    }
-
-    public int getDexterity() {
-	return stats.get(5);
+    public void setEnergy(int energy) {
+	this.energy = energy;
     }
 }
