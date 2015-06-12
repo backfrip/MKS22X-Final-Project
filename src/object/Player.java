@@ -1,7 +1,7 @@
 package object;
 import java.util.*;
 
-public class Player extends MovingEntity{
+public class Player extends Mob {
 	private int exp;
 	private ArrayList<Item> inventory;
 	private ArrayList<Integer> stats;
