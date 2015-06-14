@@ -1,10 +1,17 @@
 package object;
 
+import java.io.*;
 import java.util.*;
 
+import main.OurGame;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+
 public class Stats {
-    private int maxHealth, maxEnergy, ATK, DEX, INT;
+    private int maxHealth, maxEnergy, ATK, DEX, INT, exp;
     private Scanner scan;
+    private FileHandle data;
     
     public Stats(String str){
     	setStats(str);
@@ -18,8 +25,26 @@ public class Stats {
 	setINT(i);
     }
     
-    public void setStats(String filename){
-    	scan = new Scanner("")
+    public void setStats(String name){
+    	data = Gdx.files.internal("resource/data/PlayerStats.txt");
+    	String text = data.readString();
+    	String[] text2 = text.split("\n");
+    	if (text2[0].equals(name)){
+    		setMaxHealth(Integer.parseInt(text2[1]));
+    		setMaxEnergy(Integer.parseInt(text2[2]));
+    		setATK(Integer.parseInt(text2[3]));
+    		setINT(Integer.parseInt(text2[4]));
+    		setDEX(Integer.parseInt(text2[5]));
+    		setExp(Integer.parseInt(text2[6]));
+
+    	}
+    	
+    }
+    
+    public void saveGame(String name){
+    	data = Gdx.files.internal("resource/data/PlayerStats.txt");
+    	String newStats = name + "\n" + getMaxHealth() + "\n" + getMaxEnergy() + "\n" + getATK() + "\n" + getINT() + "\n" + getDEX() + "\n" + getExp(); 
+    	data.writeString(newStats, false);
     }
 
     public int getMaxHealth() {
@@ -58,9 +83,17 @@ public class Stats {
 	return INT;
     }
 
-    public void setINT(int iNT) {
+
+	public void setINT(int iNT) {
 	INT = iNT;
     }
     
+    public int getExp() {
+		return exp;
+	}
+
+	public void setExp(int exp) {
+		this.exp = exp;		
+	}
     
 }
