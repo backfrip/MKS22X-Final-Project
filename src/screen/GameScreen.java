@@ -76,7 +76,7 @@ public class GameScreen implements Screen {
 
 	camera.update();
 	m = camera.combined.cpy();
-	m.translate((w - 2) / 2.0f * (player.getX() - player.getY()) - 1,
+	m.translate((w - 2) / -2.0f * (player.getX() - player.getY()) - 1,
 		(h - 1) / 2.0f * (player.getX() + player.getY()) - 1, 0);
 
 
@@ -109,8 +109,9 @@ public class GameScreen implements Screen {
 	    Gdx.app.exit();
 	if (Gdx.input.isKeyJustPressed(Keys.F11))
 	    fullScreen();
-	if (Gdx.input.isKeyPressed(Keys.UP)) {
-	    // player.setX();
+	if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+	    player.setX(4);
+	    player.setY(5);
 	}
     }
 

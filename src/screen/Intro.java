@@ -70,16 +70,15 @@ public class Intro implements Screen {
 	// text.setColor(0.7f, 0.2f, 0.2f, 1);
 	title.setColor(Color.MAROON);
 	title.draw(batch, "Origin", 375, 700);
-	text.draw(batch, "Click Anywhere to Start", 500, 175);
+	text.draw(batch, "Press Any Key to Start", 500, 175);
 	batch.end();
-	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-	    // OurGame.backgroundTheme.play();
+	if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Keys.ANY_KEY)) {
 	    dispose();
 	    game.setScreen(new GameScreen(game));
 	}
 	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 	    Gdx.app.exit();
-	if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+	if (Gdx.input.isKeyJustPressed(Keys.F11)) {
 	    if (!Gdx.graphics.isFullscreen()) {
 		Gdx.graphics.setDisplayMode(
 			Gdx.graphics.getDesktopDisplayMode().width,
