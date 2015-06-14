@@ -1,5 +1,8 @@
 package screen;
 
+import object.Map;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
@@ -10,81 +13,136 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import entity.Player;
 import main.*;
 
 public class GameScreen implements Screen {
-    private OurGame game;
+    private final float w, h;
+    private Game game;
     private OrthographicCamera camera;
     private Viewport viewport;
-    private Texture tileImage;
-    private SpriteBatch batch;
+    private Map map;
     private ShapeRenderer sr;
+    private SpriteBatch batch;
+    private Texture space, wall, templayer;
+    private Matrix4 m;
+    private Player player;
 
-    public GameScreen(OurGame gameRef) {
+    public GameScreen(Game gameRef) {
 	game = gameRef;
+
+	// Render setup
 	camera = new OrthographicCamera();
-	viewport = new FillViewport(80, 45, camera);
-	tileImage = new Texture(new FileHandle("resource/img/stile.png"));
+	viewport = new ExtendViewport(320, 180, camera);
+	sr = new ShapeRenderer(); // For debugging purposes
 	batch = new SpriteBatch();
-	sr = new ShapeRenderer();
-    }
+	m = camera.combined.cpy(); // Translation matrix
 
-    @Override
-    public void render(float delta) {
-	Gdx.gl.glClearColor(1, 1, 1, 1);
-	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	// Map setup
+	map = new Map("blankspace");
+	space = new Texture(new FileHandle("resource/img/stile.png"));
+	wall = new Texture(new FileHandle("resource/img/wtile.png"));
+	templayer = new Texture(new FileHandle("resource/img/ptile.png"));
+	w = space.getWidth();
+	h = space.getHeight();
 
-	if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-	    if (!Gdx.graphics.isFullscreen()) {
-		Gdx.graphics.setDisplayMode(
-			Gdx.graphics.getDesktopDisplayMode().width,
-			Gdx.graphics.getDesktopDisplayMode().height, true);
-	    } else {
-		Gdx.graphics.setDisplayMode(1280, 720, false);
-	    }
-	}
-	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-	    Gdx.app.exit();
-	}
-
-	camera.update();
-
-	batch.setProjectionMatrix(camera.combined);
-	batch.begin();
-	batch.end();
-
-	sr.setProjectionMatrix(camera.combined);
-	sr.begin(ShapeType.Line);
-	sr.setColor(0, 0.1f, 0.5f, 1);
-	sr.circle(0, 0, 1, 20);
-	sr.setColor(0.7f, 0, 0, 1);
-	sr.circle(0, 0, 0.3f, 10);
-	sr.end();
-    }
-
-    @Override
-    public void dispose() {
-	game.dispose();
-	batch.dispose();
-	sr.dispose();
-	tileImage.dispose();
-    }
-
-    @Override
-    public void hide() {
-	// TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-	// TODO Auto-generated method stub
+	// Entity setup
+	player = new Player(new Rectangle(map.getSpawn().x, map.getSpawn().y,
+		1, 1));
     }
 
     @Override
     public void show() {
+    }
+
+    @Override
+    public void render(float delta) {
+	Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+	getInput();
+
+
+	camera.update();
+	m = camera.combined.cpy();
+	m.translate((w - 2) / 2.0f * (player.getX() - player.getY()) - 1,
+		(h - 1) / 2.0f * (player.getX() + player.getY()) - 1, 0);
+
+
+	batch.setProjectionMatrix(m);
+	batch.begin();
+
+	drawMap();
+	drawPlayer();
+
+	batch.end();
+
+
+	sr.setProjectionMatrix(camera.combined);
+	sr.begin(ShapeType.Line);
+	sr.setColor(0.2f, 0, 0.6f, 1);
+	sr.circle(0, 0, 5, 40);
+	sr.end();
+    }
+
+    private void getInput() {
+	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+	    Gdx.app.exit();
+	if (Gdx.input.isKeyJustPressed(Keys.F11))
+	    fullScreen();
+	if (Gdx.input.isKeyPressed(Keys.UP)) {
+	    // player.setX();
+	}
+    }
+
+    private void fullScreen() {
+	if (!Gdx.graphics.isFullscreen()) {
+	    Gdx.graphics.setDisplayMode(
+		    Gdx.graphics.getDesktopDisplayMode().width,
+		    Gdx.graphics.getDesktopDisplayMode().height, true);
+	    Gdx.input.setCursorCatched(true);
+	} else {
+	    Gdx.graphics.setDisplayMode(1280, 720, false);
+	    Gdx.input.setCursorCatched(false);
+	}
+    }
+
+    private void drawMap() {
+	float c, s;
+	for (int x = 0; x < map.length(); x++) {
+	    for (int y = 0; y < map.depth(); y++) {
+		c = (w - 2) / 2.0f * (x - y - 1);
+		s = (h - 1) / -2.0f * (x + y + 2);
+		if (map.getTile(x, y) == '#')
+		    batch.draw(wall, c, s, w, h, 0, 0, (int) w, (int) h, false,
+			    false);
+		else
+		    batch.draw(space, c, s, w, h, 0, 0, (int) w, (int) h,
+			    false, false);
+	    }
+	}
+    }
+
+    private void drawPlayer() {
+	Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+	camera.unproject(mouse);
+	float c = mouse.x;
+	float s = mouse.y;
+	float x = (-1.0f / 2.0f) - (s / (h - 1)) + (c / (w - 2));
+	float y = (-3.0f / 2.0f) - (s / (h - 1)) - (c / (w - 2));
+	System.out.println(x + ", " + y);
+	// player.setDirectionByScreen(mouse.x, mouse.y);
+	batch.draw(templayer, (w - 2) / 2.0f
+		* (player.getX() - player.getY() - 1), (h - 1) / -2.0f
+		* (player.getX() + player.getY() + 2), w, h, 0, 0, (int) w,
+		(int) h, false, false);
     }
 
     @Override
@@ -93,8 +151,20 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resume() {
-	// TODO Auto-generated method stub
+    public void pause() {
     }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void dispose() {
+    }
+
 
 }
