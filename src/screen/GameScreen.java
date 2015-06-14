@@ -77,7 +77,7 @@ public class GameScreen implements Screen {
 	camera.update();
 	m = camera.combined.cpy();
 	m.translate((w - 2) / -2.0f * (player.getX() - player.getY()) - 1,
-		(h - 1) / 2.0f * (player.getX() + player.getY()) - 1, 0);
+		(h - 1) / 2.0f * (player.getX() + player.getY() + 1) - 1, 0);
 
 
 	batch.setProjectionMatrix(m);
@@ -109,6 +109,10 @@ public class GameScreen implements Screen {
 	    Gdx.app.exit();
 	if (Gdx.input.isKeyJustPressed(Keys.F11))
 	    fullScreen();
+	if (Gdx.input.isKeyPressed(Keys.UP)) {
+	    player.setX(player.getX() + player.getDirection().x / 10);
+	    player.setY(player.getY() + player.getDirection().y / 10);
+	}
 	if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 	    player.setX(4);
 	    player.setY(5);
@@ -144,14 +148,17 @@ public class GameScreen implements Screen {
     }
 
     private void drawPlayer() {
+	if (map.getTile(player.getX(), player.getY()) == '#')
+	    System.out.println("Colliding!" + Math.random());
 	Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 	camera.unproject(mouse);
 	float c = mouse.x;
 	float s = mouse.y;
-	float x = (s / (1 - h)) + (c / (w - 2)) + 1;
-	float y = (s / (1 - h)) - (c / (w - 2)) + 1;
-	coords = x + ", " + y;
-	// player.setDirectionByScreen(mouse.x, mouse.y);
+	float x = (s / (1 - h)) + (c / (w - 2)) + player.getX();
+	float y = (s / (1 - h)) - (c / (w - 2)) + player.getY();
+	coords = player.getX() + ", " + player.getY();
+	player.setDirection(x, y);
+	player.getDirection();
 	batch.draw(templayer, (w - 2) / 2.0f
 		* (player.getX() - player.getY() - 1), (h - 1) / -2.0f
 		* (player.getX() + player.getY() + 2), w, h, 0, 0, (int) w,

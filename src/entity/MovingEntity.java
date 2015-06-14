@@ -23,12 +23,8 @@ public abstract class MovingEntity extends Entity {
     }
 
     public void setDirection(float targetX, float targetY) {
-	direction = new Vector2(getBounds().x, getBounds().y);
-    }
-
-    public void setDirectionByScreen(float targetX, float targetY) {
-	direction.set(targetX, targetY);
-	direction.setLength(1);
+	direction.set(targetX - getX(), targetY - getY());
+	direction.setLength2(1);
     }
 
 }
