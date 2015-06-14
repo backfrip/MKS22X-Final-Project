@@ -75,7 +75,7 @@ public class Intro implements Screen{
     	if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
     		music.stop();
     		dispose();
-    		game.setScreen(new DiagnosticII(game));
+    		game.setScreen(new GameScreen(game));
     	}
     	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
     	    Gdx.app.exit();

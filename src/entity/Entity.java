@@ -39,6 +39,14 @@ public abstract class Entity {
 	return new Rectangle(bounds);
     }
 
+    public float getX() {
+	return bounds.x;
+    }
+
+    public float getY() {
+	return bounds.y;
+    }
+
     public void setX(float x) {
 	bounds.x = x;
     }
