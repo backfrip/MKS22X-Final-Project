@@ -21,12 +21,66 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
-### [Version 0.0.6](../..) (2015-05-31)
+### [Version 0.2.0](../../commit/5acef5f3e12faf02250563fab34ec53426431210) (2015-06-08)
 
-##### New Features
+#### New Features
+  - Adjusted 2D Iso rendering, game now starts in this orientation
+  - Changed movement mechanics so that it moves relative to player
+  - Began working on an opening screen to game, user can switch from this intro screen to game screen
+  - Downloaded image to put as background to intro screen
+
+#### Features Planned for Future
+  - Adding audio and text to intro screen
+  - Movement relative to mouse instead of to player
+
+### [Version 0.1.4](../../commit/5acef5f3e12faf02250563fab34ec53426431210) (2015-06-08)
+
+#### New Features
+  - Figured out equation that translated the map into 2D isometric
+  - Adjusted Camera in relationship to new orientation
+  - Updated QuadTree to make working on collisions later on easier
+
+#### Features Planned for Future
+  - Implementing old features such as fullscreen and restart from 2D Map to 2D Isometric
+  - Adjust movement to complement 2D Isometric plane
+
+### [Version 0.1.3](../../commit/35e4f36fb999798410720cbc66154927c70a03c8) (2015-06-07)
+  
+#### New Features
+  - Added new blankspace.omap to test code
+  - Began working with Space2D to create different screens
+
+### [Version 0.1.2](../../commit/7c9e4a420047b96e8a6106b9668cb56141b9265f) (2015-06-05)
+
+#### New Features
+  - Created basic item class
+  - Mutator and Accessor Methods for MovingEntity
+
+### [Version 0.1.1](../../commit/cae101195293a20cad6752567608ca39e0db2505) (2015-06-02)
+
+#### New Features
+  - User can switch between maps by pressing "M"
+  - User can restart game by pressing "R"
+  - Instructions displayed to assist player
+
+### [Version 0.1.0](../../commit/0ef1e1b757833da5178a2ce3382c5bb4cec58240) (2015-06-01)
+
+#### New Features
   - Added a Diagnostic screen to debug entities on a 2D grid before moving to isometric
   - Created a Map class to hold information about map cells
   - Implemented rendering of map
+  - Use can now toggle fullscreen by pressing space
+  - Improved movement and collision mechanics
+
+#### Features Planned for Future
+  - Player and Monster classes
+  - Pickup Items 
+  - Rendering an Isometric map
+
+
+### [Version 0.0.6](../../commit/3d069dd682fb15df80a074361e6cb16aff0a6c32) (2015-05-31)
+
+##### New Features
   - Added basic movement and collision systems for player debugging, only for temporary testing
   - Swapped FillViewport for ExtendViewport to avoid cropping
   - General refactoring
