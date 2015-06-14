@@ -11,11 +11,21 @@ import object.Item;
 import object.Stats;
 
 public class Player extends Mob {
-    private int exp;
+    private int exp, level;
 
     public Player(Rectangle rectangle) {
-	super(OurGame.playerName, rectangle, OurGame.playerSprite,
-		OurGame.playerStats, OurGame.playerInventory);
+    	super(OurGame.playerName, rectangle, OurGame.playerSprite, OurGame.playerStats, OurGame.playerInventory);
+    	loadExp();
+    	calcLevel();
+	
     }
+    public void loadExp(){
+    	exp = OurGame.playerStats.getExp();
+    }
+    
+    public void calcLevel(){
+    	level = exp / 10;
+    }
+    
 
 }

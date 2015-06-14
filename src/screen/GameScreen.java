@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
@@ -36,6 +38,10 @@ public class GameScreen implements Screen {
     private Player player;
     private BitmapFont text;
     private String coords;
+    private BitmapFont test;
+    private FreeTypeFontGenerator gen;
+    private FreeTypeFontParameter par;
+    
 
     public GameScreen(Game gameRef) {
 	game = gameRef;
@@ -47,7 +53,7 @@ public class GameScreen implements Screen {
 	batch = new SpriteBatch();
 	m = camera.combined.cpy(); // Translation matrix
 	text = new BitmapFont();
-
+	test = new BitmapFont();
 	// Map setup
 	map = new Map("blankspace");
 	space = new Texture(new FileHandle("resource/img/stile.png"));
@@ -93,7 +99,12 @@ public class GameScreen implements Screen {
 
 	text.setColor(0.7f, 0.2f, 0.2f, 1);
 	text.draw(batch, coords, 10, Gdx.graphics.getHeight() - 10);
-
+	test.setColor(0.7f, 0.2f, 0.2f, 1);
+	test.draw(batch, "Name: " + OurGame.playerName + " Max Health:" + OurGame.playerStats.getMaxHealth()
+			+ " Max Energy:" + OurGame.playerStats.getMaxEnergy() + " Attack:" + OurGame.playerStats.getATK()
+			+ " Intelligence:" + OurGame.playerStats.getINT() + " Dexterity:" + OurGame.playerStats.getDEX()
+			+ " XP:" + OurGame.playerStats.getExp(), 10, 10);
+	
 	batch.end();
 
 
