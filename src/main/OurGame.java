@@ -13,7 +13,7 @@ import object.Stats;
 public class OurGame extends Game {
     public static final String playerName = "Lu";
     public static final Sprite playerSprite = null;
-    public static final Stats playerStats = null;
+    public static final Stats playerStats = new Stats();
     public static final Inventory playerInventory = null;
     public static Music backgroundTheme;
 
