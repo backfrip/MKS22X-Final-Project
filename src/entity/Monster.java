@@ -1,4 +1,5 @@
-package object;
+package entity;
+
 
 public class Monster extends MovingEntity {
 	public Monster(){}

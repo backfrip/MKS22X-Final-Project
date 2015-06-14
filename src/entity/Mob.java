@@ -1,4 +1,6 @@
-package object;
+package entity;
+
+import object.Stats;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;

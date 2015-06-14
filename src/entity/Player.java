@@ -1,5 +1,7 @@
-package object;
+package entity;
 import java.util.*;
+
+import object.Item;
 
 public class Player extends Mob {
 	private int exp;

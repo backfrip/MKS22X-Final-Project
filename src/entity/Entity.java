@@ -1,4 +1,4 @@
-package object;
+package entity;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Rectangle;
  * Abstract parent for objects with a graphic representation in the game.
  */
 public abstract class Entity {
-    private Rectangle bounds;
     private String name;
+    private Rectangle bounds;
     private Sprite sprite;
 
     /**
@@ -22,16 +22,33 @@ public abstract class Entity {
      *            The sprite that represents this Entity.
      */
     public Entity(String n, Rectangle b, Sprite s) {
-	bounds = b;
 	name = n;
+	bounds = b;
 	sprite = s;
     }
 
-    public Rectangle getBounds() {
-	return bounds;
+    public void setName(String n) {
+	name = n;
     }
 
     public String getName() {
 	return name;
     }
+
+    public Rectangle getBounds() {
+	return new Rectangle(bounds);
+    }
+
+    public void setX(float x) {
+	bounds.x = x;
+    }
+
+    public void setY(float y) {
+	bounds.y = y;
+    }
+
+    public Sprite getSprite() {
+	return new Sprite(sprite);
+    }
+
 }
