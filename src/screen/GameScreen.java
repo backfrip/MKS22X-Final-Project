@@ -10,6 +10,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -33,6 +34,8 @@ public class GameScreen implements Screen {
     private Texture space, wall, templayer;
     private Matrix4 m;
     private Player player;
+    private BitmapFont text;
+    private String coords;
 
     public GameScreen(Game gameRef) {
 	game = gameRef;
@@ -43,6 +46,7 @@ public class GameScreen implements Screen {
 	sr = new ShapeRenderer(); // For debugging purposes
 	batch = new SpriteBatch();
 	m = camera.combined.cpy(); // Translation matrix
+	text = new BitmapFont();
 
 	// Map setup
 	map = new Map("blankspace");
@@ -72,7 +76,7 @@ public class GameScreen implements Screen {
 
 	camera.update();
 	m = camera.combined.cpy();
-	m.translate((w - 2) / 2.0f * (player.getX() - player.getY()) - 1,
+	m.translate((w - 2) / -2.0f * (player.getX() - player.getY()) - 1,
 		(h - 1) / 2.0f * (player.getX() + player.getY()) - 1, 0);
 
 
@@ -81,6 +85,14 @@ public class GameScreen implements Screen {
 
 	drawMap();
 	drawPlayer();
+
+	batch.end();
+	batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(),
+		Gdx.graphics.getHeight());
+	batch.begin();
+
+	text.setColor(0.7f, 0.2f, 0.2f, 1);
+	text.draw(batch, coords, 10, Gdx.graphics.getHeight() - 10);
 
 	batch.end();
 
@@ -97,8 +109,9 @@ public class GameScreen implements Screen {
 	    Gdx.app.exit();
 	if (Gdx.input.isKeyJustPressed(Keys.F11))
 	    fullScreen();
-	if (Gdx.input.isKeyPressed(Keys.UP)) {
-	    // player.setX();
+	if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+	    player.setX(4);
+	    player.setY(5);
 	}
     }
 
@@ -135,9 +148,9 @@ public class GameScreen implements Screen {
 	camera.unproject(mouse);
 	float c = mouse.x;
 	float s = mouse.y;
-	float x = (-1.0f / 2.0f) - (s / (h - 1)) + (c / (w - 2));
-	float y = (-3.0f / 2.0f) - (s / (h - 1)) - (c / (w - 2));
-	System.out.println(x + ", " + y);
+	float x = (s / (1 - h)) + (c / (w - 2)) + 1;
+	float y = (s / (1 - h)) - (c / (w - 2)) + 1;
+	coords = x + ", " + y;
 	// player.setDirectionByScreen(mouse.x, mouse.y);
 	batch.draw(templayer, (w - 2) / 2.0f
 		* (player.getX() - player.getY() - 1), (h - 1) / -2.0f
