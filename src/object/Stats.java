@@ -1,7 +1,14 @@
 package object;
 
+import java.util.*;
+
 public class Stats {
     private int maxHealth, maxEnergy, ATK, DEX, INT;
+    private Scanner scan;
+    
+    public Stats(String str){
+    	setStats(str);
+    }
 
     public Stats (int mH, int mE, int a, int d, int i) {
 	setMaxHealth(mH);
@@ -9,6 +16,10 @@ public class Stats {
 	setATK(a);
 	setDEX(d);
 	setINT(i);
+    }
+    
+    public void setStats(String filename){
+    	scan = new Scanner("")
     }
 
     public int getMaxHealth() {
