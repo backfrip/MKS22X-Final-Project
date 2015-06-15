@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -27,7 +28,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import entity.Entity;
 import entity.MovingEntity;
 import entity.Player;
+import entity.Monster;
 import main.*;
+import object.MonsterSpawn;
 
 public class GameScreen implements Screen {
     private final float w, h;
@@ -45,6 +48,7 @@ public class GameScreen implements Screen {
     private Quadtree collider;
     private LinkedList<Entity> entities, collisions;
     private LinkedList<MovingEntity> mobs;
+    private MonsterSpawn ms;
 
 
     public GameScreen(Game gameRef) {
@@ -67,7 +71,7 @@ public class GameScreen implements Screen {
 	h = space.getHeight();
 	collider = new Quadtree(0, new Rectangle(0, 0, map.length(),
 		map.depth()));
-
+	ms = new MonsterSpawn(map);
 	// Entity setup
 	player = new Player(new Rectangle(map.getSpawn().x, map.getSpawn().y,
 		1 - 4 / 34.0f, 1 - 4 / 34.0f));
@@ -94,6 +98,9 @@ public class GameScreen implements Screen {
 
 	// Check collisions
 	checkCollisions();
+	
+	// Spawns Monsters
+	spawnMonsters();
 
 	// Set up translation matrix
 	camera.update();
@@ -144,6 +151,14 @@ public class GameScreen implements Screen {
 	}
     }
 
+    private void spawnMonsters(){
+    	Rectangle spawnLoc;
+    	spawnLoc = ms.findLoc();
+    	if (spawnLoc != null){
+    		String type = ms.monsterType();
+    		mobs.add(new Monster(type, spawnLoc, new Sprite()));
+    	}
+    }
     private void checkCollisions() {
 	collider.clear();
 
