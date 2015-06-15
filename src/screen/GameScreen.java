@@ -16,11 +16,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -34,11 +31,11 @@ import object.MonsterSpawn;
 
 public class GameScreen implements Screen {
     private final float w, h;
+    @SuppressWarnings("unused")
     private Game game;
     private OrthographicCamera camera;
     private Viewport viewport;
     private Map map;
-    private ShapeRenderer sr;
     private SpriteBatch batch;
     private Texture space, wall, templayer;
     private Matrix4 m;
@@ -57,7 +54,6 @@ public class GameScreen implements Screen {
 	// Render setup
 	camera = new OrthographicCamera();
 	viewport = new ExtendViewport(320, 180, camera);
-	sr = new ShapeRenderer(); // For debugging purposes
 	batch = new SpriteBatch();
 	m = camera.combined.cpy(); // Translation matrix
 	text = new BitmapFont();
@@ -98,7 +94,7 @@ public class GameScreen implements Screen {
 
 	// Check collisions
 	checkCollisions();
-	
+
 	// Spawns Monsters
 	spawnMonsters();
 
@@ -151,14 +147,15 @@ public class GameScreen implements Screen {
 	}
     }
 
-    private void spawnMonsters(){
-    	Rectangle spawnLoc;
-    	spawnLoc = ms.findLoc();
-    	if (spawnLoc != null){
-    		String type = ms.monsterType();
-    		mobs.add(new Monster(type, spawnLoc, new Sprite()));
-    	}
+    private void spawnMonsters() {
+	Rectangle spawnLoc;
+	spawnLoc = ms.findLoc();
+	if (spawnLoc != null) {
+	    String type = ms.monsterType();
+	    mobs.add(new Monster(type, spawnLoc, new Sprite()));
+	}
     }
+
     private void checkCollisions() {
 	collider.clear();
 
