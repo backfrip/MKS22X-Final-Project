@@ -21,7 +21,7 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
-### [Version 0.3.0](../../commit/67c62e0700be57da6769e6693779be808e0d423e) (2015-06-14)
+### [Version 0.3.0](../../commit/77caef904b62aace056f91f316576ef236905748) (2015-06-15)
 
 #### New Features
   - Finished collisions between Entities as well as between PLayer and wall
