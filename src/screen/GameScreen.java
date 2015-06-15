@@ -73,8 +73,10 @@ public class GameScreen implements Screen {
 	entities = new LinkedList<Entity>();
 	mobs = new LinkedList<MovingEntity>();
 	mobs.add(player);
-	mobs.add(new Player(new Rectangle(3, 3, 1, 1)));
-	mobs.add(new Player(new Rectangle(4, 4, 1, 1)));
+	mobs.add(new Player(new Rectangle(4, 6, 1, 1)));
+	mobs.add(new Player(new Rectangle(5, 3, 1, 1)));
+	mobs.add(new Player(new Rectangle(4, 5, 1, 1)));
+	mobs.add(new Player(new Rectangle(5, 5, 1, 1)));
     }
 
     @Override
@@ -99,8 +101,8 @@ public class GameScreen implements Screen {
 	// Set up translation matrix
 	camera.update();
 	m = camera.combined.cpy();
-	m.translate((w - 2) / -2.0f * (player.getX() - player.getY()) - 1,
-		(h - 1) / 2.0f * (player.getX() + player.getY() + 1) - 1, 0);
+	m.translate((w - 2) / -2.0f * (player.x() - player.y()) - 1, (h - 1)
+		/ 2.0f * (player.x() + player.y() + 1) - 1, 0);
 
 	// Draw map and entities
 	batch.setProjectionMatrix(m);
@@ -167,11 +169,31 @@ public class GameScreen implements Screen {
 	    collider.retrieve(collisions, mob);
 
 	    for (Entity other : collisions) {
-		if (mob.getBounds().overlaps(other.getBounds()) && mob != other) {
-		    if (mob.getVelocity().angle() > 0 && mob.getVelocity().angle() < 90) {
-			
-		    }
-		}
+		if (mob.getBounds().overlaps(other.getBounds()) && mob != other)
+		    if (mob.getVelocity().angle() >= 0)
+			if (mob.getVelocity().angle() >= 90)
+			    if (mob.getVelocity().angle() >= 180)
+				if (mob.getVelocity().angle() >= 270)
+				    if (mob.x() + mob.width() - other.x() > other
+					    .y() + other.height() - mob.y())
+					mob.y(other.y() + other.height());
+				    else
+					mob.x(other.x() - mob.width());
+				else if (other.x() + other.width() - mob.x() > other
+					.y() + other.height() - mob.y())
+				    mob.y(other.y() + other.height());
+				else
+				    mob.x(other.x() + other.width());
+			    else if (other.x() + other.width() - mob.x() > mob
+				    .y() + mob.height() - other.y())
+				mob.y(other.y() - mob.height());
+			    else
+				mob.x(other.x() + other.width());
+			else if (mob.x() + mob.width() - other.x() > mob.y()
+				+ mob.height() - other.y())
+			    mob.y(other.y() - mob.height());
+			else
+			    mob.x(other.x() - mob.width());
 	    }
 	}
     }
@@ -207,9 +229,9 @@ public class GameScreen implements Screen {
 	camera.unproject(mouse);
 	float c = mouse.x;
 	float s = mouse.y;
-	float x = (s / (1 - h)) + (c / (w - 2)) + player.getX();
-	float y = (s / (1 - h)) - (c / (w - 2)) + player.getY();
-	coords = player.getX() + ", " + player.getY();
+	float x = (s / (1 - h)) + (c / (w - 2)) + player.x();
+	float y = (s / (1 - h)) - (c / (w - 2)) + player.y();
+	coords = player.x() + ", " + player.y();
 	player.setDirection(x, y);
 	player.getDirection();
 	// batch.draw(templayer, (w - 2) / 2.0f
@@ -219,16 +241,14 @@ public class GameScreen implements Screen {
 
 	// draw entities
 	for (Entity ent : entities) {
-	    batch.draw(templayer, (w - 2) / 2.0f
-		    * (ent.getX() - ent.getY() - 1),
-		    (h - 1) / -2.0f * (ent.getX() + ent.getY() + 2), w, h, 0,
-		    0, (int) w, (int) h, false, false);
+	    batch.draw(templayer, (w - 2) / 2.0f * (ent.x() - ent.y() - 1),
+		    (h - 1) / -2.0f * (ent.x() + ent.y() + 2), w, h, 0, 0,
+		    (int) w, (int) h, false, false);
 	}
 	for (Entity mob : mobs) {
-	    batch.draw(templayer, (w - 2) / 2.0f
-		    * (mob.getX() - mob.getY() - 1),
-		    (h - 1) / -2.0f * (mob.getX() + mob.getY() + 2), w, h, 0,
-		    0, (int) w, (int) h, false, false);
+	    batch.draw(templayer, (w - 2) / 2.0f * (mob.x() - mob.y() - 1),
+		    (h - 1) / -2.0f * (mob.x() + mob.y() + 2), w, h, 0, 0,
+		    (int) w, (int) h, false, false);
 	}
     }
 

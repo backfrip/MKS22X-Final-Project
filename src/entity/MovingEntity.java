@@ -9,7 +9,7 @@ public abstract class MovingEntity extends Entity {
     private boolean primed;
 
     public MovingEntity(String n, Rectangle b, Sprite s) {
-	this(n, b, s, new Vector2(0, 1), 0.1f);
+	this(n, b, s, new Vector2(0, 1), 0.05f);
     }
 
     public MovingEntity(String n, Rectangle b, Sprite s, Vector2 d, float v) {
@@ -28,7 +28,7 @@ public abstract class MovingEntity extends Entity {
     }
 
     public void setDirection(float targetX, float targetY) {
-	direction.set(targetX - getX(), targetY - getY());
+	direction.set(targetX - x(), targetY - y());
 	direction.setLength2(1);
     }
 
@@ -39,8 +39,8 @@ public abstract class MovingEntity extends Entity {
 
     public void move() {
 	if (primed) {
-	    setX(getX() + velocity.x);
-	    setY(getY() + velocity.y);
+	    x(x() + velocity.x);
+	    y(y() + velocity.y);
 	    primed = false;
 	}
     }

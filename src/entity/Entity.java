@@ -39,28 +39,28 @@ public abstract class Entity {
 	return new Rectangle(bounds);
     }
 
-    public float getX() {
+    public float x() {
 	return bounds.x;
     }
 
-    public float getY() {
-	return bounds.y;
-    }
-
-    public float getWidth() {
-	return bounds.width;
-    }
-
-    public float getHeight() {
-	return bounds.height;
-    }
-
-    public void setX(float x) {
+    public void x(float x) {
 	bounds.x = x;
     }
 
-    public void setY(float y) {
+    public float y() {
+	return bounds.y;
+    }
+
+    public void y(float y) {
 	bounds.y = y;
+    }
+
+    public float width() {
+	return bounds.width;
+    }
+
+    public float height() {
+	return bounds.height;
     }
 
     public Sprite getSprite() {
