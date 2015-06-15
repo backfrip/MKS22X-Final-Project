@@ -11,11 +11,19 @@ public class Mob extends MovingEntity {
     private int health, energy;
     private Stats stats;
     private Inventory inventory;
+    
+    public Mob(String n, Rectangle b, Sprite sp){
+    	super(n, b, sp);
+    	stats.loadStats(n);
+    	inventory = new Inventory();
+    }
 
     public Mob(String n, Rectangle b, Sprite sp, Stats st, Inventory i) {
-	super(n, b, sp);
-	inventory = i;
-	// OurGame.playerStats.loadStats(OurGame.playerName);
+    	super(n, b, sp);
+    	inventory = i;
+    	OurGame.playerStats.loadStats(OurGame.playerName);
+    	stats = OurGame.playerStats;
+    	
     }
 
     public int getHealth() {
@@ -31,11 +39,11 @@ public class Mob extends MovingEntity {
     }
 
     public void setStats(Stats stat) {
-	setStats(OurGame.playerName, stat.getMaxHealth(), stat.getMaxEnergy(),
+	setStats(stat.getMaxHealth(), stat.getMaxEnergy(),
 		stat.getATK(), stat.getINT(), stat.getDEX(), stat.getExp());
     }
 
-    public void setStats(String name, int maxHealth, int maxEnergy, int ATK,
+    public void setStats(int maxHealth, int maxEnergy, int ATK,
 	    int INT, int DEX, int Exp) {
 	stats.setMaxHealth(maxHealth);
 	stats.setMaxEnergy(maxEnergy);
