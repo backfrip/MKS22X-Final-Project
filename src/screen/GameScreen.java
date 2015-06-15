@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
 	text = new BitmapFont();
 
 	// Map setup
-	map = new Map("blankspace");
+	map = new Map("test3");
 	space = new Texture(new FileHandle("resource/img/stile.png"));
 	wall = new Texture(new FileHandle("resource/img/wtile.png"));
 	templayer = new Texture(new FileHandle("resource/img/ptile.png"));
@@ -74,10 +74,6 @@ public class GameScreen implements Screen {
 	entities = new LinkedList<Entity>();
 	mobs = new LinkedList<MovingEntity>();
 	mobs.add(player);
-	mobs.add(new Player(new Rectangle(4, 6, 1, 1)));
-	mobs.add(new Player(new Rectangle(5, 3, 1, 1)));
-	mobs.add(new Player(new Rectangle(4, 5, 1, 1)));
-	mobs.add(new Player(new Rectangle(5, 5, 1, 1)));
     }
 
     @Override
