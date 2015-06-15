@@ -22,8 +22,8 @@ public class OurGame extends Game {
 	backgroundTheme = Gdx.audio.newMusic(new FileHandle(
 		"resource/music/music1.mp3"));
 	backgroundTheme.setLooping(true);
-	setScreen(new Intro(this));
-	// setScreen(new GameScreen(this));
+	// setScreen(new Intro(this));
+	setScreen(new GameScreen(this));
     }
 
 }

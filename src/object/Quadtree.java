@@ -1,21 +1,24 @@
 package object;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.math.Rectangle;
+
+import entity.Entity;
 
 public class Quadtree {
     private final int MAX_OBJECTS = 10;
     private final int MAX_LEVELS = 25;
 
     private int level;
-    private ArrayList<Rectangle> entities;
+    private ArrayList<Entity> entities;
     private Rectangle bounds;
     private Quadtree[] nodes;
 
     public Quadtree(int pLevel, Rectangle rect) {
 	level = pLevel;
-	entities = new ArrayList<Rectangle>();
+	entities = new ArrayList<Entity>();
 	bounds = rect;
 	nodes = new Quadtree[4];
     }
@@ -47,7 +50,8 @@ public class Quadtree {
 		+ subHeight, subWidth, subHeight));
     }
 
-    private int getIndex(Rectangle pRect) {
+    private int getIndex(Entity ent) {
+	Rectangle pRect = ent.getBounds();
 	int index = -1;
 	double verticalMidpoint = bounds.getX() + (bounds.getWidth() / 2);
 	double horizontalMidpoint = bounds.getY() + (bounds.getHeight() / 2);
@@ -80,18 +84,19 @@ public class Quadtree {
 	return index;
     }
 
-    public void insert(Rectangle pRect) {
+    public void insert(Entity ent) {
+	Rectangle pRect = ent.getBounds();
 	if (nodes[0] != null) {
-	    int index = getIndex(pRect);
+	    int index = getIndex(ent);
 
 	    if (index != -1) {
-		nodes[index].insert(pRect);
+		nodes[index].insert(ent);
 
 		return;
 	    }
 	}
 
-	entities.add(pRect);
+	entities.add(ent);
 
 	if (entities.size() > MAX_OBJECTS && level < MAX_LEVELS) {
 	    if (nodes[0] == null) {
@@ -110,10 +115,10 @@ public class Quadtree {
 	}
     }
 
-    public ArrayList retrieve(ArrayList returnObjects, Rectangle pRect) {
-	int index = getIndex(pRect);
+    public LinkedList retrieve(LinkedList returnObjects, Entity ent) {
+	int index = getIndex(ent);
 	if (index != -1 && nodes[0] != null) {
-	    nodes[index].retrieve(returnObjects, pRect);
+	    nodes[index].retrieve(returnObjects, ent);
 	}
 
 	returnObjects.addAll(entities);

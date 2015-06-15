@@ -1,6 +1,10 @@
 package screen;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import object.Map;
+import object.Quadtree;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -22,6 +26,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import entity.Entity;
 import entity.Player;
 import main.*;
 
@@ -35,13 +40,15 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private Texture space, wall, templayer;
     private Matrix4 m;
-    private Player player;
+    private Player player, testEnt;
     private BitmapFont text;
     private String coords;
     private BitmapFont test;
     private FreeTypeFontGenerator gen;
     private FreeTypeFontParameter par;
-    
+    private Quadtree collider;
+    private LinkedList<Entity> entities, collisions;
+
 
     public GameScreen(Game gameRef) {
 	game = gameRef;
@@ -54,6 +61,7 @@ public class GameScreen implements Screen {
 	m = camera.combined.cpy(); // Translation matrix
 	text = new BitmapFont();
 	test = new BitmapFont();
+
 	// Map setup
 	map = new Map("blankspace");
 	space = new Texture(new FileHandle("resource/img/stile.png"));
@@ -61,10 +69,16 @@ public class GameScreen implements Screen {
 	templayer = new Texture(new FileHandle("resource/img/ptile.png"));
 	w = space.getWidth();
 	h = space.getHeight();
+	collider = new Quadtree(0, new Rectangle(0, 0, map.length(),
+		map.depth()));
 
 	// Entity setup
 	player = new Player(new Rectangle(map.getSpawn().x, map.getSpawn().y,
 		1, 1));
+	testEnt = new Player(new Rectangle(3, 3, 1, 1));
+	entities = new LinkedList<Entity>();
+	entities.add(player);
+	entities.add(testEnt);
     }
 
     @Override
@@ -76,8 +90,25 @@ public class GameScreen implements Screen {
 	Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+	// Get player input
 	getInput();
+
+	// Check collisions
+	collider.clear();
+	collider.insert(player);
+	for (Entity ent : entities) {
+	    collider.insert(ent);
+	}
+	collisions = new LinkedList<Entity>();
+	for (Entity ent : entities) {
+	    collisions.clear();
+	    collider.retrieve(collisions, ent);
+
+	    for (Entity other : collisions) {
+		if (ent.getBounds().overlaps(other.getBounds()) && ent != other)
+		    System.out.println("Colliding with another Entity!");
+	    }
+	}
 
 
 	camera.update();
@@ -100,11 +131,15 @@ public class GameScreen implements Screen {
 	text.setColor(0.7f, 0.2f, 0.2f, 1);
 	text.draw(batch, coords, 10, Gdx.graphics.getHeight() - 10);
 	test.setColor(0.7f, 0.2f, 0.2f, 1);
-	test.draw(batch, "Name: " + OurGame.playerName + " Max Health:" + OurGame.playerStats.getMaxHealth()
-			+ " Max Energy:" + OurGame.playerStats.getMaxEnergy() + " Attack:" + OurGame.playerStats.getATK()
-			+ " Intelligence:" + OurGame.playerStats.getINT() + " Dexterity:" + OurGame.playerStats.getDEX()
-			+ " XP:" + OurGame.playerStats.getExp(), 10, 10);
-	
+	test.draw(batch,
+		"Name: " + OurGame.playerName + " Max Health:"
+			+ OurGame.playerStats.getMaxHealth() + " Max Energy:"
+			+ OurGame.playerStats.getMaxEnergy() + " Attack:"
+			+ OurGame.playerStats.getATK() + " Intelligence:"
+			+ OurGame.playerStats.getINT() + " Dexterity:"
+			+ OurGame.playerStats.getDEX() + " XP:"
+			+ OurGame.playerStats.getExp(), 10, 20);
+
 	batch.end();
 
 
@@ -159,8 +194,6 @@ public class GameScreen implements Screen {
     }
 
     private void drawPlayer() {
-	if (map.getTile(player.getX(), player.getY()) == '#')
-	    System.out.println("Colliding!" + Math.random());
 	Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 	camera.unproject(mouse);
 	float c = mouse.x;
@@ -173,6 +206,12 @@ public class GameScreen implements Screen {
 	batch.draw(templayer, (w - 2) / 2.0f
 		* (player.getX() - player.getY() - 1), (h - 1) / -2.0f
 		* (player.getX() + player.getY() + 2), w, h, 0, 0, (int) w,
+		(int) h, false, false);
+
+	// testEnt
+	batch.draw(templayer, (w - 2) / 2.0f
+		* (testEnt.getX() - testEnt.getY() - 1), (h - 1) / -2.0f
+		* (testEnt.getX() + testEnt.getY() + 2), w, h, 0, 0, (int) w,
 		(int) h, false, false);
     }
 
