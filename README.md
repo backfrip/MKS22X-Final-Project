@@ -21,6 +21,48 @@ A two-dimensional, isometric [dimetric], role-playing game.
 
 ## Changelog
 
+### [Version 0.3.0](../../commit/67c62e0700be57da6769e6693779be808e0d423e) (2015-06-14)
+
+#### New Features
+  - Finished collisions between Entities as well as between PLayer and wall
+  - Made movement more user-friendly
+  - Finished Monster class as well as Monster stats and monster spawning
+  - Graphics boost to make Player and Obstacles look more 3d
+
+#### Goals We Didn't Reach
+  - Battle between Player and Monsters
+  - Monster SPrites
+  - Inventory 
+
+
+### [Version 0.2.4](../../commit/67c62e0700be57da6769e6693779be808e0d423e) (2015-06-14)
+
+#### New Features
+  - Perfected movement formula. PLayer moves based on mouse. Press W or Up arrow to move
+  - Made universal stat system with HP, Enrgy, ATK, DEX, and INT
+  - Worked on QuadTree to detect collisions between Player and other Entities.
+  - Began working ona Menu class
+
+### [Version 0.2.3](../../commit/0eebfc1972c496bbba1244b0a6fff38a53c24f00) (2015-06-13)
+
+#### New Features
+  - Continued work on infrastructure, specifically the Mob and MovingEntity class
+  - Further Entity reforrm
+  - Finished introduction screen with audio nd text
+
+### [Version 0.2.2](../../commit/c4f4006efbd43c6715a56789e5ad3e0a1aaabfa9) (2015-06-11)
+
+#### New Features
+  - Worked on infrastructure (i.e. Entity heirarchy, containers, encapsulation, etc.)
+  - Began soring coordinated in Rectangular bounds instead of xcor and ycor
+  - Added accessor and mutator methods to Stats,java
+
+### [Version 0.2.1](../../commit/e3cccb1984a506381c632d3e4c44f84fef40dc6b) (2015-06-09)
+
+#### New Features
+  - Switch between normal 2D and Isometric 2D by pressing 1
+  - Added New function that Prevents player from falling off map
+
 ### [Version 0.2.0](../../commit/5acef5f3e12faf02250563fab34ec53426431210) (2015-06-08)
 
 #### New Features
