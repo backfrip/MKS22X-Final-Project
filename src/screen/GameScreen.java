@@ -87,6 +87,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+	// Clear the screen
 	Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -104,7 +105,10 @@ public class GameScreen implements Screen {
 	    collisions.clear();
 	    collider.retrieve(collisions, ent);
 
-	    for (Entity other : collisions) {
+	    for (Entity other : collisions) { // Should really switch this to a
+					      // predictive algorithm, Player
+					      // can move fast enough to pass
+					      // through objects
 		if (ent.getBounds().overlaps(other.getBounds()) && ent != other) {
 		    if (ent == player) {
 			if (ent.getX() - other.getX() < -0.9)
@@ -120,13 +124,13 @@ public class GameScreen implements Screen {
 	    }
 	}
 
-
+	// Set up translation matrix
 	camera.update();
 	m = camera.combined.cpy();
 	m.translate((w - 2) / -2.0f * (player.getX() - player.getY()) - 1,
 		(h - 1) / 2.0f * (player.getX() + player.getY() + 1) - 1, 0);
 
-
+	// Draw map and entities
 	batch.setProjectionMatrix(m);
 	batch.begin();
 
@@ -134,6 +138,8 @@ public class GameScreen implements Screen {
 	drawPlayer();
 
 	batch.end();
+
+	// Draw text
 	batch.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(),
 		Gdx.graphics.getHeight());
 	batch.begin();
@@ -152,7 +158,7 @@ public class GameScreen implements Screen {
 
 	batch.end();
 
-
+	// Draw origin debug
 	sr.setProjectionMatrix(camera.combined);
 	sr.begin(ShapeType.Line);
 	sr.setColor(0.2f, 0, 0.6f, 1);
@@ -170,8 +176,16 @@ public class GameScreen implements Screen {
 	    player.setY(player.getY() + player.getDirection().y / 10);
 	}
 	if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-	    player.setX(4);
-	    player.setY(5);
+	    player.setX(player.getX() - player.getDirection().x / 10);
+	    player.setY(player.getY() - player.getDirection().y / 10);
+	}
+	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+	    player.setX(player.getX() + player.getDirection().y / 10);
+	    player.setY(player.getY() - player.getDirection().x / 10);
+	}
+	if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+	    player.setX(player.getX() - player.getDirection().y / 10);
+	    player.setY(player.getY() + player.getDirection().x / 10);
 	}
     }
 
