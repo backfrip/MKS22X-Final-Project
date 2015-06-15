@@ -146,7 +146,7 @@ public class GameScreen implements Screen {
 	    Gdx.app.exit();
 	if (Gdx.input.isKeyJustPressed(Keys.F11))
 	    fullScreen();
-	if (Gdx.input.isKeyPressed(Keys.UP)) {
+	if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W)) {
 	    player.prime();
 	}
     }
