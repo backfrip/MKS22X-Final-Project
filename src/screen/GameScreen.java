@@ -1,6 +1,5 @@
 package screen;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import object.Map;
@@ -16,8 +15,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
@@ -27,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import entity.Entity;
+import entity.MovingEntity;
 import entity.Player;
 import main.*;
 
@@ -43,11 +41,9 @@ public class GameScreen implements Screen {
     private Player player;
     private BitmapFont text;
     private String coords;
-    private BitmapFont test;
-    private FreeTypeFontGenerator gen;
-    private FreeTypeFontParameter par;
     private Quadtree collider;
     private LinkedList<Entity> entities, collisions;
+    private LinkedList<MovingEntity> mobs;
 
 
     public GameScreen(Game gameRef) {
@@ -60,7 +56,6 @@ public class GameScreen implements Screen {
 	batch = new SpriteBatch();
 	m = camera.combined.cpy(); // Translation matrix
 	text = new BitmapFont();
-	test = new BitmapFont();
 
 	// Map setup
 	map = new Map("blankspace");
@@ -76,9 +71,10 @@ public class GameScreen implements Screen {
 	player = new Player(new Rectangle(map.getSpawn().x, map.getSpawn().y,
 		1, 1));
 	entities = new LinkedList<Entity>();
-	entities.add(player);
-	entities.add(new Player(new Rectangle(3, 3, 1, 1)));
-	entities.add(new Player(new Rectangle(4, 4, 1, 1)));
+	mobs = new LinkedList<MovingEntity>();
+	mobs.add(player);
+	mobs.add(new Player(new Rectangle(3, 3, 1, 1)));
+	mobs.add(new Player(new Rectangle(4, 4, 1, 1)));
     }
 
     @Override
@@ -94,35 +90,11 @@ public class GameScreen implements Screen {
 	// Get player input
 	getInput();
 
-	// Check collisions
-	collider.clear();
-	collider.insert(player);
-	for (Entity ent : entities) {
-	    collider.insert(ent);
-	}
-	collisions = new LinkedList<Entity>();
-	for (Entity ent : entities) {
-	    collisions.clear();
-	    collider.retrieve(collisions, ent);
+	// Move mobs
+	moveEntities();
 
-	    for (Entity other : collisions) { // Should really switch this to a
-					      // predictive algorithm, Player
-					      // can move fast enough to pass
-					      // through objects
-		if (ent.getBounds().overlaps(other.getBounds()) && ent != other) {
-		    if (ent == player) {
-			if (ent.getX() - other.getX() < -0.9)
-			    ent.setX((int) ent.getX());
-			else if (ent.getX() - other.getX() > 0.9)
-			    ent.setX((int) ent.getX() + 1);
-			if (ent.getY() - other.getY() < -0.9)
-			    ent.setY((int) ent.getY());
-			else if (ent.getY() - other.getY() > 0.9)
-			    ent.setY((int) ent.getY() + 1);
-		    }
-		}
-	    }
-	}
+	// Check collisions
+	checkCollisions();
 
 	// Set up translation matrix
 	camera.update();
@@ -146,8 +118,7 @@ public class GameScreen implements Screen {
 
 	text.setColor(0.7f, 0.2f, 0.2f, 1);
 	text.draw(batch, coords, 10, Gdx.graphics.getHeight() - 10);
-	test.setColor(0.7f, 0.2f, 0.2f, 1);
-	test.draw(batch,
+	text.draw(batch,
 		"Name: " + OurGame.playerName + " Max Health:"
 			+ OurGame.playerStats.getMaxHealth() + " Max Energy:"
 			+ OurGame.playerStats.getMaxEnergy() + " Attack:"
@@ -166,26 +137,42 @@ public class GameScreen implements Screen {
 	sr.end();
     }
 
+    private void moveEntities() {
+	for (MovingEntity mob : mobs)
+	    mob.move();
+    }
+
     private void getInput() {
 	if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 	    Gdx.app.exit();
 	if (Gdx.input.isKeyJustPressed(Keys.F11))
 	    fullScreen();
 	if (Gdx.input.isKeyPressed(Keys.UP)) {
-	    player.setX(player.getX() + player.getDirection().x / 10);
-	    player.setY(player.getY() + player.getDirection().y / 10);
+	    player.prime();
 	}
-	if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-	    player.setX(player.getX() - player.getDirection().x / 10);
-	    player.setY(player.getY() - player.getDirection().y / 10);
-	}
-	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-	    player.setX(player.getX() + player.getDirection().y / 10);
-	    player.setY(player.getY() - player.getDirection().x / 10);
-	}
-	if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-	    player.setX(player.getX() - player.getDirection().y / 10);
-	    player.setY(player.getY() + player.getDirection().x / 10);
+    }
+
+    private void checkCollisions() {
+	collider.clear();
+
+	for (Entity ent : entities)
+	    collider.insert(ent);
+
+	for (Entity mob : mobs)
+	    collider.insert(mob);
+
+	collisions = new LinkedList<Entity>();
+	for (MovingEntity mob : mobs) {
+	    collisions.clear();
+	    collider.retrieve(collisions, mob);
+
+	    for (Entity other : collisions) {
+		if (mob.getBounds().overlaps(other.getBounds()) && mob != other) {
+		    if (mob.getVelocity().angle() > 0 && mob.getVelocity().angle() < 90) {
+			
+		    }
+		}
+	    }
 	}
     }
 
@@ -235,6 +222,12 @@ public class GameScreen implements Screen {
 	    batch.draw(templayer, (w - 2) / 2.0f
 		    * (ent.getX() - ent.getY() - 1),
 		    (h - 1) / -2.0f * (ent.getX() + ent.getY() + 2), w, h, 0,
+		    0, (int) w, (int) h, false, false);
+	}
+	for (Entity mob : mobs) {
+	    batch.draw(templayer, (w - 2) / 2.0f
+		    * (mob.getX() - mob.getY() - 1),
+		    (h - 1) / -2.0f * (mob.getX() + mob.getY() + 2), w, h, 0,
 		    0, (int) w, (int) h, false, false);
 	}
     }

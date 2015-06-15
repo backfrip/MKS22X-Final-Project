@@ -47,6 +47,14 @@ public abstract class Entity {
 	return bounds.y;
     }
 
+    public float getWidth() {
+	return bounds.width;
+    }
+
+    public float getHeight() {
+	return bounds.height;
+    }
+
     public void setX(float x) {
 	bounds.x = x;
     }
