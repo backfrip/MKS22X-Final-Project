@@ -59,10 +59,10 @@ public class GameScreen implements Screen {
 	text = new BitmapFont();
 
 	// Map setup
-	map = new Map("test3");
+	map = new Map("test");
 	space = new Texture(new FileHandle("resource/img/stile.png"));
-	wall = new Texture(new FileHandle("resource/img/wtile.png"));
-	templayer = new Texture(new FileHandle("resource/img/ptile.png"));
+	wall = new Texture(new FileHandle("resource/img/wall.png"));
+	templayer = new Texture(new FileHandle("resource/img/templayer.png"));
 	w = space.getWidth();
 	h = space.getHeight();
 	collider = new Quadtree(0, new Rectangle(0, 0, map.length(),
@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
 
 	// Entity setup
 	player = new Player(new Rectangle(map.getSpawn().x, map.getSpawn().y,
-		1, 1));
+		1 - 4 / 34.0f, 1 - 4 / 34.0f));
 	entities = new LinkedList<Entity>();
 	mobs = new LinkedList<MovingEntity>();
 	mobs.add(player);
@@ -127,13 +127,6 @@ public class GameScreen implements Screen {
 			+ OurGame.playerStats.getExp(), 10, 20);
 
 	batch.end();
-
-	// Draw origin debug
-	sr.setProjectionMatrix(camera.combined);
-	sr.begin(ShapeType.Line);
-	sr.setColor(0.2f, 0, 0.6f, 1);
-	sr.circle(0, 0, 5, 40);
-	sr.end();
     }
 
     private void moveEntities() {
@@ -249,8 +242,8 @@ public class GameScreen implements Screen {
 		c = (w - 2) / 2.0f * (x - y - 1);
 		s = (h - 1) / -2.0f * (x + y + 2);
 		if (map.getTile(x, y) == '#')
-		    batch.draw(wall, c, s, w, h, 0, 0, (int) w, (int) h, false,
-			    false);
+		    batch.draw(wall, c, s, w, wall.getHeight(), 0, 0, (int) w,
+			    wall.getHeight(), false, false);
 		else
 		    batch.draw(space, c, s, w, h, 0, 0, (int) w, (int) h,
 			    false, false);
@@ -268,21 +261,19 @@ public class GameScreen implements Screen {
 	coords = player.x() + ", " + player.y();
 	player.setDirection(x, y);
 	player.getDirection();
-	// batch.draw(templayer, (w - 2) / 2.0f
-	// * (player.getX() - player.getY() - 1), (h - 1) / -2.0f
-	// * (player.getX() + player.getY() + 2), w, h, 0, 0, (int) w,
-	// (int) h, false, false);
 
 	// draw entities
 	for (Entity ent : entities) {
 	    batch.draw(templayer, (w - 2) / 2.0f * (ent.x() - ent.y() - 1),
-		    (h - 1) / -2.0f * (ent.x() + ent.y() + 2), w, h, 0, 0,
-		    (int) w, (int) h, false, false);
+		    (h - 1) / -2.0f * (ent.x() + ent.y() + 2),
+		    templayer.getWidth(), templayer.getHeight(), 0, 0,
+		    templayer.getWidth(), templayer.getHeight(), false, false);
 	}
 	for (Entity mob : mobs) {
-	    batch.draw(templayer, (w - 2) / 2.0f * (mob.x() - mob.y() - 1),
-		    (h - 1) / -2.0f * (mob.x() + mob.y() + 2), w, h, 0, 0,
-		    (int) w, (int) h, false, false);
+	    batch.draw(templayer, (w - 2) / 2.0f * (mob.x() - mob.y() - 1) + 2,
+		    (h - 1) / -2.0f * (mob.x() + mob.y() + 2) + 1.5f,
+		    templayer.getWidth() - 2, templayer.getHeight() - 2, 0, 0,
+		    templayer.getWidth(), templayer.getHeight(), false, false);
 	}
     }
 
