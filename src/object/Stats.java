@@ -30,19 +30,48 @@ public class Stats {
     }
 
     public void loadStats(String name) {
-	data = Gdx.files.internal("resource/data/PlayerStats.txt");
-	String text = data.readString();
-	String[] text2 = text.split("\n");
-	for (int x = 0; x < text2.length; x++) {
-	    text2[x] = text2[x].substring(0, text2[x].length() - 1);
-	}
-	setMaxHealth(Integer.parseInt(text2[1]));
-	setMaxEnergy(Integer.parseInt(text2[2]));
-	setATK(Integer.parseInt(text2[3]));
-	setINT(Integer.parseInt(text2[4]));
-	setDEX(Integer.parseInt(text2[5]));
-	setExp(Integer.parseInt(text2[6]));
-
+    	if (name.equals(OurGame.playerName)){
+    		data = Gdx.files.internal("resource/data/PlayerStats.txt");
+    		String text = data.readString();
+    		String[] text2 = text.split("\n");
+    		for (int x = 0; x < text2.length; x++) {
+    			text2[x] = text2[x].substring(0, text2[x].length() - 1);
+    		}
+    		setMaxHealth(Integer.parseInt(text2[1]));
+    		setMaxEnergy(Integer.parseInt(text2[2]));
+    		setATK(Integer.parseInt(text2[3]));
+    		setINT(Integer.parseInt(text2[4]));
+    		setDEX(Integer.parseInt(text2[5]));
+    		setExp(Integer.parseInt(text2[6]));
+    	} else {
+    		data = Gdx.files.internal("resource/data/MonsterList.txt");
+    		String text = data.readString();
+    		String[] text2 = text.split("\n");
+    		String[] helper;
+    		String[][] text3 = new String[text2.length][7];
+    		for (int y = 0; y < text2.length; y++){
+    			helper = text2[y].split(",");
+    			for (int z = 0; z < helper.length; z++){
+    				text3[y][z] = helper[z];
+    			}
+    		}
+    		for (int x = 0; x < text3.length; x++) {
+    			for (int w = 0; w < text3[0].length; w++){
+    				text3[x][w] = text3[x][w].substring(0, text3[x][w].length() - 1);
+    			}
+    		}
+    		for (int x = 0; x < text3.length; x++) {
+    			for (int w = 0; w < text3[0].length; w++){
+    				System.out.println(text3[x][w]);
+    			}
+    		}
+    		setMaxHealth(Integer.parseInt(text2[1]));
+    		setMaxEnergy(Integer.parseInt(text2[2]));
+    		setATK(Integer.parseInt(text2[3]));
+    		setINT(Integer.parseInt(text2[4]));
+    		setDEX(Integer.parseInt(text2[5]));
+    		setExp(Integer.parseInt(text2[6]));
+    	}
 
     }
 
