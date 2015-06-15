@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private Texture space, wall, templayer;
     private Matrix4 m;
-    private Player player, testEnt;
+    private Player player;
     private BitmapFont text;
     private String coords;
     private BitmapFont test;
@@ -75,10 +75,10 @@ public class GameScreen implements Screen {
 	// Entity setup
 	player = new Player(new Rectangle(map.getSpawn().x, map.getSpawn().y,
 		1, 1));
-	testEnt = new Player(new Rectangle(3, 3, 1, 1));
 	entities = new LinkedList<Entity>();
 	entities.add(player);
-	entities.add(testEnt);
+	entities.add(new Player(new Rectangle(3, 3, 1, 1)));
+	entities.add(new Player(new Rectangle(4, 4, 1, 1)));
     }
 
     @Override
@@ -105,8 +105,18 @@ public class GameScreen implements Screen {
 	    collider.retrieve(collisions, ent);
 
 	    for (Entity other : collisions) {
-		if (ent.getBounds().overlaps(other.getBounds()) && ent != other)
-		    System.out.println("Colliding with another Entity!");
+		if (ent.getBounds().overlaps(other.getBounds()) && ent != other) {
+		    if (ent == player) {
+			if (ent.getX() - other.getX() < -0.9)
+			    ent.setX((int) ent.getX());
+			else if (ent.getX() - other.getX() > 0.9)
+			    ent.setX((int) ent.getX() + 1);
+			if (ent.getY() - other.getY() < -0.9)
+			    ent.setY((int) ent.getY());
+			else if (ent.getY() - other.getY() > 0.9)
+			    ent.setY((int) ent.getY() + 1);
+		    }
+		}
 	    }
 	}
 
@@ -170,10 +180,8 @@ public class GameScreen implements Screen {
 	    Gdx.graphics.setDisplayMode(
 		    Gdx.graphics.getDesktopDisplayMode().width,
 		    Gdx.graphics.getDesktopDisplayMode().height, true);
-	    Gdx.input.setCursorCatched(true);
 	} else {
 	    Gdx.graphics.setDisplayMode(1280, 720, false);
-	    Gdx.input.setCursorCatched(false);
 	}
     }
 
@@ -203,16 +211,18 @@ public class GameScreen implements Screen {
 	coords = player.getX() + ", " + player.getY();
 	player.setDirection(x, y);
 	player.getDirection();
-	batch.draw(templayer, (w - 2) / 2.0f
-		* (player.getX() - player.getY() - 1), (h - 1) / -2.0f
-		* (player.getX() + player.getY() + 2), w, h, 0, 0, (int) w,
-		(int) h, false, false);
+	// batch.draw(templayer, (w - 2) / 2.0f
+	// * (player.getX() - player.getY() - 1), (h - 1) / -2.0f
+	// * (player.getX() + player.getY() + 2), w, h, 0, 0, (int) w,
+	// (int) h, false, false);
 
-	// testEnt
-	batch.draw(templayer, (w - 2) / 2.0f
-		* (testEnt.getX() - testEnt.getY() - 1), (h - 1) / -2.0f
-		* (testEnt.getX() + testEnt.getY() + 2), w, h, 0, 0, (int) w,
-		(int) h, false, false);
+	// draw entities
+	for (Entity ent : entities) {
+	    batch.draw(templayer, (w - 2) / 2.0f
+		    * (ent.getX() - ent.getY() - 1),
+		    (h - 1) / -2.0f * (ent.getX() + ent.getY() + 2), w, h, 0,
+		    0, (int) w, (int) h, false, false);
+	}
     }
 
     @Override
