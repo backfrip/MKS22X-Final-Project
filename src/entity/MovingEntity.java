@@ -9,7 +9,7 @@ public abstract class MovingEntity extends Entity {
     private boolean primed;
 
     public MovingEntity(String n, Rectangle b, Sprite s) {
-	this(n, b, s, new Vector2(0, 1), 0.05f);
+	this(n, b, s, new Vector2(0, 1), 0.1f);
     }
 
     public MovingEntity(String n, Rectangle b, Sprite s, Vector2 d, float v) {
