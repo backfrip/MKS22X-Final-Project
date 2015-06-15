@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -194,6 +195,43 @@ public class GameScreen implements Screen {
 			    mob.y(other.y() - mob.height());
 			else
 			    mob.x(other.x() - mob.width());
+	    }
+
+	    Rectangle other;
+
+	    for (int x = (int) Math.floor(mob.x()); x < mob.x() + 1; x++) {
+		for (int y = (int) Math.floor(mob.y()); y < mob.y() + 1; y++) {
+		    if (map.getTile(x, y) == '#') {
+			other = new Rectangle(x, y, 1, 1);
+			if (mob.getBounds().overlaps(other))
+			    if (mob.getVelocity().angle() >= 0)
+				if (mob.getVelocity().angle() >= 90)
+				    if (mob.getVelocity().angle() >= 180)
+					if (mob.getVelocity().angle() >= 270)
+					    if (mob.x() + mob.width() - other.x > other.y
+						    + other.height - mob.y())
+						mob.y(other.y + other.height);
+					    else
+						mob.x(other.x - mob.width());
+					else if (other.x + other.width
+						- mob.x() > other.y
+						+ other.height - mob.y())
+					    mob.y(other.y + other.height);
+					else
+					    mob.x(other.x + other.width);
+				    else if (other.x + other.width - mob.x() > mob
+					    .y() + mob.height() - other.y)
+					mob.y(other.y - mob.height());
+				    else
+					mob.x(other.x + other.width);
+				else if (mob.x() + mob.width() - other.x > mob
+					.y() + mob.height() - other.y)
+				    mob.y(other.y - mob.height());
+				else
+				    mob.x(other.x - mob.width());
+
+		    }
+		}
 	    }
 	}
     }
